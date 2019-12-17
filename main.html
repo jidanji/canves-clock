@@ -21,9 +21,9 @@
         <div id="aa2">xx:xx:xx</div>
     </div>
     <script>
-        function drawCircular(oxInput, oyInput, radiusInput, fillStyle, which) {
+        function drawCircular(oxInput, oyInput, radiusInput, fillStyle, m1, m2, m3) {
             ctx.beginPath();
-            ctx.arc(oxInput, oyInput, radiusInput, Math.PI * (-0.5), Math.PI * (-0.5) + Math.PI * 2 / 12 * which, false);
+            ctx.arc(oxInput, oyInput, radiusInput, Math.PI * (-0.5), Math.PI * (-0.5) + Math.PI * 2 / 12 * (m1 + (m2 / 60)), false);
             var gradient = ctx.createLinearGradient(0, 0, 170, 0);
             gradient.addColorStop("0", "#f1e6fb");
             gradient.addColorStop("0.2", "#7a2696");
@@ -34,7 +34,7 @@
             ctx.stroke();
 
             ctx.beginPath();
-            ctx.arc(oxInput, oyInput, radiusInput, Math.PI * (-0.5) + Math.PI * 2 / 12 * which, Math.PI * 1.5, false);
+            ctx.arc(oxInput, oyInput, radiusInput, Math.PI * (-0.5) + Math.PI * 2 / 12 * (m1 + (m2 / 60)), Math.PI * 1.5, false);
 
 
             ctx.lineWidth = 3;
@@ -102,7 +102,7 @@
 
             ctx.clearRect(0, 0, 200, 200);
 
-            drawCircular(ox, oy, radius, '#7a2969', m1)
+            drawCircular(ox, oy, radius, '#7a2969', m1, m2, m3)
 
             drawSplit();
 
@@ -135,27 +135,29 @@
                 a3.push([100, 100]);
             })
 
-            var b1 = [];
-            var b2 = [];
-            var b3 = [];
+
+
             //时
-            numbers1.forEach(function (item) {
-                b1.push([Math.sin(Math.PI * 2 / 12 * (item)) * (radius - 25) + ox, oy - Math.cos(Math.PI * 2 / 12 * (item)) * (radius - 25)]);
-            })
+            function GetHourArc() {
+                return [Math.sin(Math.PI * 2 / 12 * (m1 + (m2 / 60))) * (radius - 25) + ox, oy - Math.cos(Math.PI * 2 / 12 * (m1 + (m2 / 60))) * (radius - 25)];
+            }
 
             //分
-            numbers2.forEach(function (item) {
-                b2.push([Math.sin(Math.PI * 2 / 60 * (item)) * (radius - 10) + ox, oy - Math.cos(Math.PI * 2 / 60 * (item)) * (radius - 10)]);
-            })
+            function GetMinituesArc() {
+                return [Math.sin(Math.PI * 2 / 60 * (m2 + (m3 / 60))) * (radius - 10) + ox, oy - Math.cos(Math.PI * 2 / 60 * (m2 + (m3 / 60))) * (radius - 10)]
+            }
 
             //秒
-            numbers3.forEach(function (item) {
-                b3.push([Math.sin(Math.PI * 2 / 60 * (item)) * (radius - 2) + ox, oy - Math.cos(Math.PI * 2 / 60 * (item)) * (radius - 2)]);
-            })
+            function getSecondsArc() {
+                return  [Math.sin(Math.PI * 2 / 60 * (m3)) * (radius - 2) + ox, oy - Math.cos(Math.PI * 2 / 60 * (m3)) * (radius - 2)]
+            }
 
 
-            var x1 = a1[m1-1];
-            var xx1 = b1[m1-1];
+
+
+
+            var x1 = a1[m1 - 1];
+            var xx1 = GetHourArc();
             ctx.lineWidth = 3; //设置线宽
             ctx.strokeStyle = '#2e427c'
             ctx.beginPath();
@@ -166,7 +168,7 @@
 
 
             x1 = a2[m2];
-            xx1 = b2[m2];
+            xx1 = GetMinituesArc();
             ctx.lineWidth = 2; //设置线宽
 
             ctx.strokeStyle = '#2e427c'
@@ -179,7 +181,7 @@
             ctx.stroke();
 
             x1 = a3[m3];
-            xx1 = b3[m3];
+            xx1 = getSecondsArc();
             ctx.lineWidth = 1; //设置线宽
 
             ctx.strokeStyle = '#2e427c'
@@ -190,12 +192,6 @@
             ctx.lineTo(xx1[0], xx1[1]);
 
             ctx.stroke();
-
-
-
-
-
-
         }
         var canvas = document.getElementById('canvas');
         ctx = canvas.getContext('2d');
