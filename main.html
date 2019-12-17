@@ -138,22 +138,24 @@
             var b1 = [];
             var b2 = [];
             var b3 = [];
+            //时
             numbers1.forEach(function (item) {
-                b1.push([Math.sin(Math.PI * 2 / 12 * (item - 1)) * (radius - 25) + ox, oy - Math.cos(Math.PI * 2 / 12 * (item - 1)) * (radius - 25)]);
-
+                b1.push([Math.sin(Math.PI * 2 / 12 * (item)) * (radius - 25) + ox, oy - Math.cos(Math.PI * 2 / 12 * (item)) * (radius - 25)]);
             })
 
+            //分
             numbers2.forEach(function (item) {
-                b2.push([Math.sin(Math.PI * 2 / 60 * (item - 1)) * (radius - 10) + ox, oy - Math.cos(Math.PI * 2 / 60 * (item - 1)) * (radius - 10)]);
+                b2.push([Math.sin(Math.PI * 2 / 60 * (item)) * (radius - 10) + ox, oy - Math.cos(Math.PI * 2 / 60 * (item)) * (radius - 10)]);
             })
 
+            //秒
             numbers3.forEach(function (item) {
-                b3.push([Math.sin(Math.PI * 2 / 60 * (item - 1)) * (radius - 2) + ox, oy - Math.cos(Math.PI * 2 / 60 * (item - 1)) * (radius - 2)]);
+                b3.push([Math.sin(Math.PI * 2 / 60 * (item)) * (radius - 2) + ox, oy - Math.cos(Math.PI * 2 / 60 * (item)) * (radius - 2)]);
             })
 
 
-            var x1 = a1[m1];
-            var xx1 = b1[m1];
+            var x1 = a1[m1-1];
+            var xx1 = b1[m1-1];
             ctx.lineWidth = 3; //设置线宽
             ctx.strokeStyle = '#2e427c'
             ctx.beginPath();
@@ -207,7 +209,6 @@
             var v2 = d.getMinutes();
             var v3 = d.getSeconds();
             currentTime(v1, v2, v3);
-
         }
 
         setInterval(function () { ff() }, 1000)
